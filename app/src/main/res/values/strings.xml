@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">RTMPScreen</string>
+
+
+    <string name="app_info">实现手机屏幕拼屏功能,原理是将手机屏幕录制(MediaProjection)的信息,通过mediaCodeC编码为RTMP协议需要的FLV封装格式,再通过
+    RTMP协议进行推流到指定nginx服务器地址,电脑端通过VLC对该地址拉流,从而实现RTMP协议投屏效果.</string>
+</resources>
