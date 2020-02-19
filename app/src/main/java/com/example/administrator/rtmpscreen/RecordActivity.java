@@ -76,6 +76,9 @@ public class RecordActivity extends AppCompatActivity implements Sender.OpenCall
                 url = et.getText().toString();
                 if (mPr == null && mPrCode == 0 && mPrBundle == null) {
                     Sender.getInstance().open(url, width, height,RecordActivity.this);
+                    mPrMgr = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
+                    Intent screenCaptureIntent = mPrMgr.createScreenCaptureIntent();
+                    startActivityForResult(screenCaptureIntent, 1);
                 } else {
                     if (mPr != null) {
                         releaseProjection();
@@ -178,13 +181,15 @@ public class RecordActivity extends AppCompatActivity implements Sender.OpenCall
 
     @Override
     public void openSuccess() {
-        mPrMgr = (MediaProjectionManager) getSystemService(MEDIA_PROJECTION_SERVICE);
-        Intent screenCaptureIntent = mPrMgr.createScreenCaptureIntent();
-        startActivityForResult(screenCaptureIntent, 1);
+
     }
 
     @Override
     public void openFailed() {
+        if (mPr != null) {
+            releaseProjection();
+            releaseTimer();
+        }
         runOnUiThread(() -> Toast.makeText(this,"无法连接到指定的RTMP流",Toast.LENGTH_SHORT).show());
     }
 }
